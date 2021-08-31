@@ -1,0 +1,45 @@
+'''
+parameters:
+@times: [[5,9],[1,4],[3,7]...]
+'''
+
+def solve(times):
+    len_times = len(times)
+    max_time = 0
+    for t in times:
+      if t[1] > max_time:
+        max_time = t[1]
+
+    mark = [0 for i in range(max_time)]
+    for i in range(len_times):
+        l = times[i][0]
+        r = times[i][1]
+        for j in range(l, r):
+            mark[j] += 1
+     
+    coverage = 0
+    for i in range(max_time):
+        if (mark[i]):
+            coverage += 1
+ 
+    exactly_one_till_i = [0 for i in range(max_time+1)]
+    if (mark[0] == 1):
+        exactly_one_till_i[0] = 1
+    for i in range(1, max_time):
+        if (mark[i] == 1):
+            exactly_one_till_i[i] = exactly_one_till_i[i - 1] + 1
+        else:
+            exactly_one_till_i[i] = exactly_one_till_i[i - 1]
+
+    maxcoverage = 0
+    for i in range(len_times):
+        l = interval[i][0] - 1
+        r = interval[i][1] - 1
+ 
+        removed = 0
+        removed = exactly_one_till_i[r] - exactly_one_till_i[l]
+
+        if (coverage - removed >= maxcoverage):
+            maxcoverage = coverage - removed
+
+    return maxcoverage
